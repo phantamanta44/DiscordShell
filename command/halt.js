@@ -5,7 +5,7 @@ const ap = new ArgumentParser({
   prog: 'halt',
   description: 'Reboot or stop the bot.',
 });
-ap.addArgument(['-h', '--halt'], {
+ap.addArgument(['-s', '--shutdown'], {
   help: 'Shut down the bot.', action: 'storeConst', dest: 'a', constant: {
     code: 0, msg: 'Shutting down!',
   },
