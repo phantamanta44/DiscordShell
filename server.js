@@ -4,14 +4,18 @@ const {cmdRegistry} = require('./command.js');
 const fs = require('fs');
 
 const bot = new Discord.Client();
+let cmdPattern;
 bot.on('ready', () => {
   logs.info('Logged in');
+  cmdPattern = new RegExp(`^\\s*<@!?${bot.user.id}>\s*(.+)`, 'g');
 });
 bot.on('message', async msg => {
-  if (!msg.channel.permissionsFor || msg.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-    if (!!msg.content && msg.content.startsWith('$/')) {
+  if (!msg.author.bot && !!msg.content
+    && (!msg.channel.permissionsFor || msg.channel.permissionsFor(bot.user).has('SEND_MESSAGES'))) {
+    let match = cmdPattern.exec(msg.content);
+    if (!!match) {
       logs.info(`${msg.author.tag}: ${msg.content}`);
-      const result = await cmdRegistry.executeFormatted(msg, bot, msg.content.substring(2));
+      const result = await cmdRegistry.executeFormatted(msg, bot, match[1]);
       if (!!result) {
         if (typeof result === 'string') {
           msg.channel.send(result);
