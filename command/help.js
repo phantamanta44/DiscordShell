@@ -13,6 +13,6 @@ module.exports = new Command('help', 'info').withArgs(ap)
     'For example, this counts users with an "e" in their name:',
     '', '  lsuser -n | grep -i e | wc -l', '',
     'Here\'s an index of my currently registered commands:',
-    '', '  ' + cmdRegistry.commands.sort().map(c => c.name).join(', '), '',
+    '', '  ' + cmdRegistry.commands.map(c => c.name).sort().join(', '), '',
     'You can get info on any command using man. Have fun!',
   ]);
