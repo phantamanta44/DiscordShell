@@ -9,7 +9,7 @@ const ap = new ArgumentParser({
   description: 'Execute COMMAND with full privileges.',
 });
 ap.addArgument('COMMAND', {help: 'The command to run.'});
-ap.addArgument('ARG', {help: 'The arguments to COMMAND', nargs: '*'});
+ap.addArgument('ARG', {help: 'The arguments to COMMAND.', nargs: '*'});
 module.exports = new Command('sudo').withArgs(ap)
   .withExec(async (args, msg, bot, stdin) => {
     if (sudoers.includes(msg.author.id)) {
