@@ -1,0 +1,22 @@
+{
+  "name": "DiscordShell",
+  "version": "1.0.0",
+  "description": "sh",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "argparse": "^1.0.9",
+    "discord.js": "^11.1.0",
+    "uws": "^8.14.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phantamanta44/DiscordShell.git"
+  },
+  "engines": {
+    "node": "9.1.x"
+  },
+  "license": "MIT"
+}
