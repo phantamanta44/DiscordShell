@@ -10,20 +10,25 @@ bot.on('ready', () => {
   cmdPattern = new RegExp(`^\\s*<@!?${bot.user.id}>\s*(.+)`, 'g');
 });
 bot.on('message', async msg => {
-  if (!msg.author.bot && !!msg.content
-    && (!msg.channel.permissionsFor || msg.channel.permissionsFor(bot.user).has('SEND_MESSAGES'))) {
-    let match = cmdPattern.exec(msg.content);
-    if (!!match) {
-      logs.info(`${msg.author.tag}: ${msg.content}`);
-      const result = await cmdRegistry.executeFormatted(msg, bot, match[1]);
-      if (!!result) {
-        if (typeof result === 'string') {
-          msg.channel.send(result);
-        } else if (result instanceof Discord.RichEmbed) { // this can't ever happen?
-          msg.channel.send('', {embed: result});
-        } else {
-          msg.channel.send(result.msg, {embed: result.embed});
-        }
+  if (!msg.author.bot && !!msg.content) {
+    let result;
+    if (!msg.channel.guild) {
+      logs.info(`M/ ${msg.author.tag}: ${msg.content}`);
+      result = await cmdRegistry.executeFormatted(msg, bot, msg.content);
+    } else if (msg.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
+      let match = cmdPattern.exec(msg.content);
+      if (!!match) {
+        logs.info(`G/ ${msg.author.tag}: ${msg.content}`);
+        result = await cmdRegistry.executeFormatted(msg, bot, match[1]);
+      }
+    }
+    if (!!result) {
+      if (typeof result === 'string') {
+        msg.channel.send(result);
+      } else if (result instanceof Discord.RichEmbed) { // this can't ever happen?
+        msg.channel.send('', {embed: result});
+      } else {
+        msg.channel.send(result.msg, {embed: result.embed});
       }
     }
   }
