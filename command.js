@@ -132,7 +132,7 @@ class CommandRegistry {
   async executeFormatted(msg, bot, str) {
     try {
       let result = (await this.execute(msg, bot, str)).join('\n');
-      if (result.length > 1900) result = result.substring(0, 1900) + `\n(${result.length - 1900} more characters...)`;
+      if (result.length > 1000) result = result.substring(0, 1000) + `\n(${result.length - 1000} more characters...)`;
       return `\`\`\`\n${result}\n\`\`\``;
     } catch (e) {
       return `${msg.author.toString()}: ${e.message}`;
