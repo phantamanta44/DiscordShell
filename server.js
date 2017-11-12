@@ -7,7 +7,7 @@ const bot = new Discord.Client();
 let cmdPattern;
 bot.on('ready', () => {
   logs.info('Logged in');
-  cmdPattern = new RegExp(`^\\s*<@!?${bot.user.id}>\s*(.+)`, 'g');
+  cmdPattern = new RegExp(`^\\s*<@!?${bot.user.id}>\s*(.+)`);
 });
 bot.on('message', async msg => {
   if (!msg.author.bot && !!msg.content) {
