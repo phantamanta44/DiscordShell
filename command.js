@@ -204,9 +204,10 @@ class Command {
     return this;
   }
 
-  async invoke(args, msg, bot, stdin) {
+  async invoke(args, msg, bot, stdin, su = false) {
     try {
       const parsed = this.args.parseArgs(args);
+      parsed.superuserMode = su;
       return await this.exec(parsed, msg, bot, stdin);
     } catch (e) {
       if (e instanceof HelpCalled) return this.args.formatHelp();
