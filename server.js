@@ -33,6 +33,11 @@ bot.on('message', async msg => {
     }
   }
 });
+bot.on('disconnect', async () => {
+  logs.error('Disconnected unrecoverably!');
+  await bot.destroy();
+  process.exit(1);
+});
 
 (async () => {
   const files = await fs.readdirSync(__dirname + '/command');
