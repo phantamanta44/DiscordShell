@@ -8,14 +8,18 @@ const ap = new ArgumentParser({
   prog: 'sudo',
   description: 'Execute COMMAND with full privileges.',
   prefixChars: [],
+  addHelp: false,
 });
 ap.addArgument('COMMAND', {help: 'The command to run.'});
 ap.addArgument('ARG', {help: 'The arguments to COMMAND.', nargs: '*'});
 module.exports = new Command('sudo').withArgs(ap)
   .withExec(async (args, msg, bot, stdin) => {
-    if (sudoers.includes(msg.author.id)) {
-      const command = cmdRegistry.resolve(args['COMMAND']);
-      if (!command) throw new Error(`No such command \`${args['COMMAND']}\``);
+    const name = args['COMMAND'];
+    if (/^-h|--help$/.test(name)) {
+      return ap.formatHelp();
+    } else if (sudoers.includes(msg.author.id)) {
+      const command = cmdRegistry.resolve(name);
+      if (!command) throw new Error(`No such command \`${name}\``);
       const result = command.invoke(args['ARG'], msg, bot, stdin, true);
       return typeof result === 'string' ? [result] : result;
     } else {
